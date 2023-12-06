@@ -1,24 +1,20 @@
 import React from 'react';
-import {
-  AppBar,
-  fade,
-  IconButton,
-  InputBase,
-  makeStyles,
-  Tab,
-  Tabs,
-  Toolbar,
-  Typography,
-} from '@material-ui/core';
+import { Link } from 'react-router-dom/cjs/react-router-dom';
+import { fade, makeStyles } from '@material-ui/core';
+import AppBar from '@material-ui/core/AppBar';
+import Hidden from '@material-ui/core/Hidden';
+import IconButton from '@material-ui/core/IconButton';
+import InputBase from '@material-ui/core/InputBase';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalanceOutlined';
 import SearchIcon from '@material-ui/icons/SearchOutlined';
+import CustomTab from '../customs/CustomTab';
+import CustomTabs from '../customs/CustomTabs';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
-  },
-  logoButton: {
-    marginRight: theme.spacing(1),
   },
   title: {
     display: 'none',
@@ -34,12 +30,8 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
     marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
+    marginLeft: theme.spacing(5),
+    width: '35%',
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -65,22 +57,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Appbar() {
+function Searchbar() {
   const classes = useStyles();
 
   return (
-    <div className={classes.grow}>
+    <div>
       <AppBar position='static'>
         <Toolbar>
-          <IconButton
-            edge='start'
-            className={classes.logoButton}
-            color='inherit'>
+          <IconButton edge='start' color='inherit' to='/' component={Link}>
             <AccountBalanceIcon />
           </IconButton>
-          <Typography className={classes.title} variant='h6'>
-            MyAPP
-          </Typography>
+          <Typography variant='h6'>MyAPP</Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -97,64 +84,60 @@ function Appbar() {
   );
 }
 
-function TabPanel(props) {
-  const { children, value, index, ...others } = props;
-
-  return (
-    <div
-      role='tabpanel'
-      hidden={value !== index}
-      id={`tabpanel-${index}`}
-      aria-labelledby={`tab-${index}`}
-      {...others}>
-      {value === index && <div>{children}</div>}
-    </div>
-  );
-}
+const tabStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  padding: {
+    padding: theme.spacing(1),
+  },
+  tabs: {
+    backgroundColor: '#2e1534',
+  },
+}));
 
 export default function Topbar() {
-  const [tabIndex, setTabIndex] = React.useState(0);
+  const classes = tabStyles();
+  const [tabId, setTabId] = React.useState(0);
 
-  const handleTabChange = (newTabIndex) => setTabIndex(newTabIndex);
+  const handleTabChange = (event, newTabId) => setTabId(newTabId);
 
   return (
     <div>
-      <Appbar />
-      <AppBar position='static' id='topbar-nav-id'>
-        <Tabs
-          value={tabIndex}
-          onChange={handleTabChange}
-          variant='scrollable'
-          scrollButtons='auto'>
-          <Tab label='Dashboard' />
-          <Tab label='Transactions' />
-          <Tab label='Accounts' />
-          <Tab label='Reports' />
-          <Tab label='Wishlist' />
-          <Tab label='Settings' />
-        </Tabs>
-      </AppBar>
+      <Searchbar />
+      <Hidden lgUp>
+        <div className={classes.tabs}>
+          <CustomTabs value={tabId} onChange={handleTabChange}>
+            <CustomTab label='Dashboard' to='/' component={Link} />
+            <CustomTab
+              label='Transactions'
+              to='/transactions'
+              component={Link}
+            />
+            <CustomTab label='Accounts' to='/accounts' component={Link} />
+            <CustomTab label='Reports' />
+            <CustomTab label='Wishlist' />
+            <CustomTab label='Settings' />
+          </CustomTabs>
+          <Typography className={classes.padding} />
+        </div>
 
-      {/* <div>
-        <TabPanel value={tabIndex} index={0}>
-          <Dashboard />
-        </TabPanel>
-        <TabPanel value={tabIndex} index={1}>
-          <Transactions />
-        </TabPanel>
-        <TabPanel value={tabIndex} index={2}>
-          <Accounts />
-        </TabPanel>
-        <TabPanel value={tabIndex} index={3}>
-          <Reports />
-        </TabPanel>
-        <TabPanel value={tabIndex} index={4}>
-          <Wishlist />
-        </TabPanel>
-        <TabPanel value={tabIndex} index={5}>
-          <Settings />
-        </TabPanel>
-      </div> */}
+        {/* <AppBar position='static'>
+          <Tabs
+            value={tabIndex}
+            onChange={handleTabChange}
+            variant='fullWidth'
+            indicatorColor='secondary'
+            scrollButtons='auto'>
+            <Tab label='Dashboard'  />
+            <Tab label='Transactions' />
+            <Tab label='Accounts' />
+            <Tab label='Reports' />
+            <Tab label='Wishlist' />
+            <Tab label='Settings' />
+          </Tabs>
+        </AppBar> */}
+      </Hidden>
     </div>
   );
 }

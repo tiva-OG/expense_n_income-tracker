@@ -1,14 +1,13 @@
-import React from 'react';
+import { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
-import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
-import List from '@material-ui/core/List';
-import { Box, Paper } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { mainListItems, secondaryListItems } from './listItems';
+
+import MainList from './MainList';
+import SecondaryList from './SecondaryList';
 
 const drawerWidth = 240;
 
@@ -46,16 +45,22 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar() {
   const classes = useStyles();
+  const [selected, setSelected] = useState(0);
+
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
-    <Box className={classes.root}>
-      <Drawer variant='permanent' open classes={{ paper: classes.drawerPaper }}>
-        <List>{mainListItems}</List>
-        <Divider />
-        <List>{secondaryListItems}</List>
-      </Drawer>
-      {/* <div className={classes.content}></div> */}
-    </Box>
+    <Hidden mdDown>
+      <Box className={classes.root}>
+        <Drawer
+          variant='permanent'
+          open
+          classes={{ paper: classes.drawerPaper }}>
+          <MainList selected={selected} setSelected={setSelected} />
+          <Divider />
+          <SecondaryList selected={selected} setSelected={setSelected} />
+        </Drawer>
+      </Box>
+    </Hidden>
   );
 }
