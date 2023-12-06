@@ -6,8 +6,8 @@
 .pnp.js
 
 # unimportant folders
-src/examples/
-README2.md
+examples/
+/README2.md
 
 # testing
 /coverage
