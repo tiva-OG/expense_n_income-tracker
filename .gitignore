@@ -5,6 +5,10 @@
 /.pnp
 .pnp.js
 
+# unimportant folders
+src/examples/
+README2.md
+
 # testing
 /coverage
 
@@ -22,5 +26,3 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# unimportant folders
-/src/examples
